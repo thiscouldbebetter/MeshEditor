@@ -1,0 +1,436 @@
+<html>
+<body>
+
+<div id="divMain"></div>
+<div id="divUI">
+	<div id="divView" style="border:1px solid">
+		<label>View:</label>
+		<div style="border:1px solid">
+			<label>Camera:</label>
+			<button onclick="buttonViewUp_Clicked();">^</button>
+			<button onclick="buttonViewDown_Clicked();">v</button>
+			<button onclick="buttonViewLeft_Clicked();">&lt;</button>
+			<button onclick="buttonViewRight_Clicked();">&gt;</button>
+			<button onclick="buttonViewIn_Clicked();">+</button>
+			<button onclick="buttonViewOut_Clicked();">-</button>
+			<button onclick="buttonViewFront_Clicked();">Front</button> 
+			<button onclick="buttonViewSide_Clicked();">Side</button>
+			<button onclick="buttonViewTop_Clicked();">Top</button>
+			<button onclick="buttonViewSelected_Clicked();">Selected</button>
+		</div>
+		<div style="border:1px solid">
+			 
+			<label>Highlight:</label>
+			<label>Vertices:</label>
+			<input id="checkboxHighlightVertices" type="checkbox" checked="true" onchange="checkboxHighlightVertices_Changed();"></input>
+			<label>Faces:</label>
+			<input id="checkboxHighlightFaces" type="checkbox" checked="true" onchange="checkboxHighlightFaces_Changed();"></input>
+		</div>
+	</div>
+	<div id="divSelect" style="border:1px solid">
+		<label>Select:</label>
+		<button onclick="buttonSelectAtCursor_Clicked();">At Cursor</button>
+		<button onclick="buttonSelectAll_Clicked();">All</button>
+		<button onclick="buttonSelectNone_Clicked();">None</button>
+		<button onclick="buttonDeselectAtCursor_Clicked();">Deselect At Cursor</button>
+	</div>
+	<div id="divVertexOperations" style="border:1px solid">
+		<label>Vertices:</label>
+		<button onclick="buttonVertexAddAtCursor_Clicked();">Add at Cursor</button>
+		<button onclick="buttonVertexDeleteSelected_Clicked();">Delete Selected</button>
+		<button onclick="buttonVertexConnectSelected_Clicked();">Connect Selected</button>
+		<button onclick="buttonVertexFaceBuildWithSelected_Clicked();">Face from Selected</button>
+	</div>
+	 
+	<div id="divTransform" style="border:1px solid">
+		<label>Transform:</label>
+		<div id="divTransformParameters">
+			<div>
+				<label>Relative to:</label>
+				<select id="selectTransformCenter">
+					<option>Origin</option>	
+					<option>Median of Selected</option>
+					<option>Cursor</option>
+				</select>
+			</div>
+			<div>
+				<label>Axes:</label>
+				<select id="selectTransformAxes">
+					<option>All</option>
+					<option>X</option>
+					<option>Y</option>
+					<option>Z</option>
+					<option>Camera Forward</option>
+				</select>
+			</div>
+			<div>
+				<label>Operation:</label>
+				<select id="selectTransformOperation">
+					<option>Translate</option>
+					<option>Rotate</option>
+					<option>Scale</option>
+				</select>
+			</div>
+			<div>
+				<label>Amount:</label>
+				<input id="inputTransformAmount" type="number" value="0"></input>
+			</div>
+			<button onclick="buttonTransform_Clicked();">Transform Selected</button>
+		</div>
+	</div>
+	<div style="border:1px solid">
+		<label>File:</label>
+		<button onclick="buttonFileSave_Clicked();">Save</button>
+		<button onclick="buttonFileLoad_Clicked();">Load:</button>
+		<input id="inputFileToLoad" type="file"></input>
+	</div>
+</div>
+
+<script type="text/javascript" src="ArrayExtensions.js"></script>
+<script type="text/javascript" src="Bounds.js"></script>
+<script type="text/javascript" src="Camera.js"></script>
+<script type="text/javascript" src="Constraint_KeepDistance.js"></script>
+<script type="text/javascript" src="Constraint_LookAt.js"></script>
+<script type="text/javascript" src="Constraint_Upright.js"></script>
+<script type="text/javascript" src="Coords.js"></script>
+<script type="text/javascript" src="Cursor.js"></script>
+<script type="text/javascript" src="Display.js"></script>
+<script type="text/javascript" src="Edge.js"></script>
+<script type="text/javascript" src="Face.js"></script>
+<script type="text/javascript" src="FileHelper.js"></script>
+<script type="text/javascript" src="Globals.js"></script>
+<script type="text/javascript" src="InputHelper.js"></script>
+<script type="text/javascript" src="Location.js"></script>
+<script type="text/javascript" src="Mesh.js"></script>
+<script type="text/javascript" src="MeshBuilder.js"></script>
+<script type="text/javascript" src="NumberHelper.js"></script>
+<script type="text/javascript" src="Orientation.js"></script>
+<script type="text/javascript" src="Plane.js"></script>
+<script type="text/javascript" src="Scene.js"></script>
+<script type="text/javascript" src="Selection.js"></script>
+<script type="text/javascript" src="Serializer.js"></script>
+<script type="text/javascript" src="Session.js"></script>
+<script type="text/javascript" src="Transform_Multiple.js"></script>
+<script type="text/javascript" src="Transform_Orient.js"></script>
+<script type="text/javascript" src="Transform_OrientInverse.js"></script>
+<script type="text/javascript" src="Transform_Perspective.js"></script>
+<script type="text/javascript" src="Transform_PerspectiveInverse.js"></script>
+<script type="text/javascript" src="Transform_Rotate.js"></script>
+<script type="text/javascript" src="Transform_Scale.js"></script>
+<script type="text/javascript" src="Transform_Translate.js"></script>
+<script type="text/javascript" src="Transform_TranslateInverse.js"></script>
+
+
+
+<script type="text/javascript">
+ 
+// ui events
+ 
+function buttonDeselectAtCursor_Clicked()
+{
+	Globals.Instance.session.deselectAtCursor();
+}
+ 
+function buttonFileLoad_Clicked()
+{
+	var inputFileToLoad = document.getElementById("inputFileToLoad");
+	var fileToLoad = inputFileToLoad.files[0];
+	if (fileToLoad == null)
+	{
+		alert("No file specified!")
+	}
+	else
+	{
+		Globals.Instance.session.sceneLoadFromFile(fileToLoad);
+	}
+}
+
+function buttonFileSave_Clicked()
+{
+	Globals.Instance.session.sceneSaveToFile();
+}
+ 
+function buttonSelectAll_Clicked()
+{
+	Globals.Instance.session.selectAll();
+}
+ 
+function buttonSelectAtCursor_Clicked()
+{
+	Globals.Instance.session.selectAtCursor();
+}
+ 
+function buttonSelectNone_Clicked()
+{
+	Globals.Instance.session.selectNone();
+}
+ 
+function buttonTransform_Clicked()
+{
+	var session = Globals.Instance.session;
+ 
+	var centerName = document.getElementById("selectTransformCenter").value;
+ 
+	var center;
+	if (centerName == "Origin")
+	{
+		center = new Coords(0, 0, 0);
+	}
+	else if (centerName == "Median of Selected")
+	{
+		var scene = session.scene;
+		center = scene.selection.medianForMesh(scene.mesh);
+	}
+	else if (centerName == "Cursor")
+	{
+		center = session.scene.cursor.pos;
+	}
+	 
+	var axes = document.getElementById("selectTransformAxes").value;
+	var operation = document.getElementById("selectTransformOperation").value;
+	var amount = parseFloat(document.getElementById("inputTransformAmount").value);
+	if (isNaN(amount) == true)
+	{
+		amount = 0;
+	}
+	 
+	var amountAsCoords;
+	var axis;
+	if (axes == "All")
+	{
+		amountAsCoords = new Coords(1, 1, 1);
+		axis = null;
+	}
+	else if (axes == "X")
+	{
+		amountAsCoords = new Coords(1, 0, 0);
+		axis = new Coords(1, 0, 0);	 
+	}
+	else if (axes == "Y")
+	{
+		amountAsCoords = new Coords(0, 1, 0);
+		axis = new Coords(0, 1, 0);	 
+	}
+	else if (axes == "Z")
+	{
+		amountAsCoords = new Coords(0, 0, 1);
+		axis = new Coords(0, 0, 1);
+	}
+	else if (axes == "Camera Forward")
+	{
+		var camera = session.scene.camera;
+		var cameraForward = camera.loc.orientation.forward;
+		amountAsCoords = cameraForward.clone().normalize(); 
+		axis = cameraForward.clone();
+	}   
+	 
+	amountAsCoords.multiplyScalar(amount);
+ 
+	var transform = null;
+	if (operation == "Translate")
+	{
+		if (axes != "All")
+		{
+			transform = new Transform_Translate(amountAsCoords);
+		}
+	}
+	else if (operation == "Rotate")
+	{
+		if (axes != "All")
+		{
+			transform = new Transform_Rotate(axis, amount);
+		}
+	}
+	else if (operation == "Scale")
+	{
+		transform = new Transform_Scale(amountAsCoords);
+	}
+ 
+	if (transform == null)
+	{
+		alert("Invalid parameters for transform!");
+	}
+	else
+	{
+		session.transformWithCenterApplyToSelected(transform, center);
+		session.update();
+	}
+}
+ 
+function buttonVertexAddAtCursor_Clicked()
+{
+	var session = Globals.Instance.session;
+	var scene = session.scene;
+	var vertexNew = scene.cursor.pos.clone();
+	var mesh = scene.mesh;
+	mesh.vertices.push(vertexNew);
+	session.selectNone();
+	session.selectAtCursor();
+	session.update();
+}
+ 
+function buttonVertexConnectSelected_Clicked()
+{
+	var session = Globals.Instance.session;
+	var scene = session.scene;
+	var mesh = scene.mesh;
+	var selection = scene.selection;
+	mesh.verticesConnectWithEdge(selection.vertexIndices);
+	session.update();
+}
+ 
+function buttonVertexDeleteSelected_Clicked()
+{
+	var session = Globals.Instance.session;
+	var scene = session.scene;
+	var mesh = scene.mesh;
+	var verticesToRemove = scene.selection.verticesForMesh(mesh);
+	mesh.verticesRemove(verticesToRemove);
+	session.selectNone();
+	session.update();
+}
+ 
+function buttonVertexFaceFromSelected_Clicked()
+{
+	var session = Globals.Instance.session;
+	var scene = session.scene;
+	var mesh = scene.mesh;
+	var selection = scene.selection;
+	mesh.edgesConnectWithFace(selection.vertexIndices);
+	session.update();
+}
+ 
+function buttonViewDown_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewMoveDown();
+	session.update();
+}
+ 
+function buttonViewFront_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewSetFront();
+	session.update();
+}
+ 
+function buttonViewIn_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewMoveIn();
+	session.update();
+}
+ 
+function buttonViewLeft_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewMoveLeft();
+	session.update();
+}
+ 
+function buttonViewOut_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewMoveOut();
+	session.update();
+}
+ 
+function buttonViewRight_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewMoveRight();
+	session.update();
+}
+ 
+function buttonViewSelected_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewSetSelected();
+	session.update();
+}
+ 
+function buttonViewSide_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewSetSide();
+	session.update();
+}
+ 
+function buttonViewTop_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewSetTop();
+	session.update();
+}
+ 
+function buttonViewUp_Clicked()
+{
+	var session = Globals.Instance.session;
+	session.viewMoveUp();
+	session.update();   
+}
+ 
+function checkboxHighlightVertices_Changed()
+{
+	var highlightVertices =
+		document.getElementById("checkboxHighlightVertices").checked;
+	var session = Globals.Instance.session;
+	session.scene.highlightVertices = highlightVertices;
+	session.update();   
+}
+ 
+function checkboxHighlightFaces_Changed()
+{
+	var highlightFaces =
+		document.getElementById("checkboxHighlightFaces").checked; 
+	var session = Globals.Instance.session;
+	session.scene.highlightFaces = highlightFaces;
+	session.update();
+}
+ 
+ 
+// main
+ 
+function main()
+{
+	var camera = new Camera
+	(
+		new Coords(100, 100, 0), // viewSize
+		50, // focalLength
+		new Location
+		(
+			new Coords(-2, -2, -2), // pos
+			Orientation.fromForwardAndDown
+			(
+				new Coords(1, 1, 1), // forward
+				new Coords(0, 0, 1) // down
+			)
+		)
+	);
+ 
+	var display = new Display
+	(
+		camera.viewSize
+	);
+	 
+	var mesh = MeshBuilder.cube();
+	 
+	var scene = new Scene
+	(
+		camera,
+		mesh
+	);
+ 
+	Globals.Instance.initialize
+	(
+		display,
+		scene
+	);
+}
+
+main();
+ 
+</script>
+ 
+</body>
+</html>
