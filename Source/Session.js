@@ -164,47 +164,60 @@ class Session
 		}
 	}
 
-	viewMove(direction)
+	viewMove(direction, distanceToMove)
 	{
-		var distanceToMove = .05;
 		var camera = this.scene.camera;
 		var cameraPos = camera.loc.pos;
 		var offset = direction.clone().multiplyScalar(distanceToMove);
 		cameraPos.add(offset);
 	}
 
-	viewMoveDown() 
+	viewMoveDown(distanceToMove)
 	{
-		this.viewMove(this.scene.camera.loc.orientation.down); 
+		this.viewMove
+		(
+			this.scene.camera.loc.orientation.down, distanceToMove
+		); 
 	}
 
-	viewMoveIn() 
+	viewMoveIn(distanceToMove) 
 	{
-		var distanceToMove = .1;
 		var camera = this.scene.camera;
 		camera.constraints[2].distanceToMaintain -= distanceToMove; // hack
 	}
 
-	viewMoveLeft() 
+	viewMoveLeft(distanceToMove) 
 	{
-		this.viewMove(this.scene.camera.loc.orientation.right.clone().invert()); 
+		this.viewMove
+		(
+			this.scene.camera.loc.orientation.right.clone().invert(),
+			distanceToMove
+		); 
 	}
 
-	viewMoveOut() 
-	{   
-		var distanceToMove = .1;
+	viewMoveOut(distanceToMove)
+	{
 		var camera = this.scene.camera;
-		camera.constraints[2].distanceToMaintain += distanceToMove; // hack
+		camera.constraints[2].distanceToMaintain +=
+			distanceToMove; // hack
 	}
 
-	viewMoveRight() 
+	viewMoveRight(distanceToMove)
 	{
-		this.viewMove(this.scene.camera.loc.orientation.right); 
+		this.viewMove
+		(
+			this.scene.camera.loc.orientation.right,
+			distanceToMove
+		); 
 	}
 
-	viewMoveUp() 
+	viewMoveUp(distanceToMove)
 	{
-		this.viewMove(this.scene.camera.loc.orientation.down.clone().invert()); 
+		this.viewMove
+		(
+			this.scene.camera.loc.orientation.down.clone().invert(),
+			distanceToMove
+		); 
 	}
 
 	viewSet(cameraOrientationNew)

@@ -7,6 +7,8 @@
 		<label>View:</label>
 		<div style="border:1px solid">
 			<label>Camera:</label>
+			<label>Pixels to Move:</label>
+			<input id="inputCameraPixelsToMove" type="number" value=".5"></input>
 			<button onclick="buttonViewUp_Clicked();">^</button>
 			<button onclick="buttonViewDown_Clicked();">v</button>
 			<button onclick="buttonViewLeft_Clicked();">&lt;</button>
@@ -303,7 +305,7 @@ function buttonVertexFaceFromSelected_Clicked()
 function buttonViewDown_Clicked()
 {
 	var session = Globals.Instance.session;
-	session.viewMoveDown();
+	session.viewMoveDown(this.cameraPixelsToMove());
 	session.update();
 }
  
@@ -317,28 +319,28 @@ function buttonViewFront_Clicked()
 function buttonViewIn_Clicked()
 {
 	var session = Globals.Instance.session;
-	session.viewMoveIn();
+	session.viewMoveIn(this.cameraPixelsToMove());
 	session.update();
 }
  
 function buttonViewLeft_Clicked()
 {
 	var session = Globals.Instance.session;
-	session.viewMoveLeft();
+	session.viewMoveLeft(this.cameraPixelsToMove());
 	session.update();
 }
  
 function buttonViewOut_Clicked()
 {
 	var session = Globals.Instance.session;
-	session.viewMoveOut();
+	session.viewMoveOut(this.cameraPixelsToMove());
 	session.update();
 }
  
 function buttonViewRight_Clicked()
 {
 	var session = Globals.Instance.session;
-	session.viewMoveRight();
+	session.viewMoveRight(this.cameraPixelsToMove());
 	session.update();
 }
  
@@ -366,10 +368,18 @@ function buttonViewTop_Clicked()
 function buttonViewUp_Clicked()
 {
 	var session = Globals.Instance.session;
-	session.viewMoveUp();
-	session.update();   
+	session.viewMoveUp(this.cameraPixelsToMove());
+	session.update();
 }
- 
+
+function cameraPixelsToMove()
+{
+	var inputCameraPixelsToMove =
+		document.getElementById("inputCameraPixelsToMove");
+	var pixelsToMove = parseFloat(inputCameraPixelsToMove.value);
+	return pixelsToMove;
+}
+
 function checkboxHighlightVertices_Changed()
 {
 	var highlightVertices =
