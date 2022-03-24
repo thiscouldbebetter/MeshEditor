@@ -9,18 +9,21 @@ class InputHelper
 
 	initialize()
 	{
-		document.body.onkeydown = this.handleEventKeyDown.bind(this);
-		document.body.onkeyup = this.handleEventKeyUp.bind(this);
+		var d = document;
+
+		d.body.onkeydown = this.handleEventKeyDown.bind(this);
+		d.body.onkeyup = this.handleEventKeyUp.bind(this);
  
 		var canvas = Globals.Instance.display.canvas;
 		canvas.onmousedown = this.handleEventMouseDown.bind(this);
 		canvas.onmouseup = this.handleEventMouseUp.bind(this);
-		 
-		var divMainBounds = divMain.getBoundingClientRect();
+
+		var divDisplay = d.getElementById("divDisplay");
+		var divDisplayBounds = divDisplay.getBoundingClientRect();
 		this.mouseClickPosOffset = new Coords
 		(
-			divMainBounds.left,
-			divMainBounds.top,
+			divDisplayBounds.left,
+			divDisplayBounds.top,
 			0
 		);
 	}

@@ -56,7 +56,7 @@ class Bounds
 
 	center()
 	{
-		return this.min.clone().add(this.max).divideScalar(2);
+		return this.min.clone().add(this.max).half();
 	}
 
 	sizeRecalculate()

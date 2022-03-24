@@ -1,26 +1,66 @@
 <html>
+
+<head>
+	<link rel="stylesheet" href="Style.css">
+</head>
+
 <body>
 
-<div id="divMain"></div>
+<h3>Mesh Editor</h3>
+
+<div id="divDisplay"></div>
+
 <div id="divUI">
 	<div id="divView" style="border:1px solid">
 		<label>View:</label>
-		<div style="border:1px solid">
+		<div>
+
 			<label>Camera:</label>
-			<label>Pixels to Move:</label>
-			<input id="inputCameraPixelsToMove" type="number" value=".5"></input>
-			<button onclick="buttonViewUp_Clicked();">^</button>
-			<button onclick="buttonViewDown_Clicked();">v</button>
-			<button onclick="buttonViewLeft_Clicked();">&lt;</button>
-			<button onclick="buttonViewRight_Clicked();">&gt;</button>
-			<button onclick="buttonViewIn_Clicked();">+</button>
-			<button onclick="buttonViewOut_Clicked();">-</button>
-			<button onclick="buttonViewFront_Clicked();">Front</button> 
-			<button onclick="buttonViewSide_Clicked();">Side</button>
-			<button onclick="buttonViewTop_Clicked();">Top</button>
-			<button onclick="buttonViewSelected_Clicked();">Selected</button>
+
+			<div>
+				<label>View Size:</label>
+				<label>Width:</label>
+				<input id="inputCameraViewSizeX" type="number" value="100"></input>
+				<label>Height:</label>
+				<input id="inputCameraViewSizeY" type="number" value="100"></input>
+				<label>Focal Length:</label>
+				<input id="inputCameraFocalLength" type="number" value="50"></input>
+				<button onclick="buttonCameraViewUpdate_Clicked();">Update</button>
+			</div>
+
+			<div>
+				<label>Position:</label>
+				<label>X:</label>
+				<input id="inputCameraPosX" type="number" value="-2"></input>
+				<label>Y:</label>
+				<input id="inputCameraPosY" type="number" value="-2"></input>
+				<label>Z:</label>
+				<input id="inputCameraPosZ" type="number" value="-2"></input>
+			</div>
+
+			<div>
+				<label>Move:</label>
+				<label>Amount:</label>
+				<input id="inputCameraPixelsToMove" type="number" value=".5"></input>
+				<button onclick="buttonViewUp_Clicked();">Up</button>
+				<button onclick="buttonViewDown_Clicked();">Down</button>
+				<button onclick="buttonViewLeft_Clicked();">Left</button>
+				<button onclick="buttonViewRight_Clicked();">Right</button>
+				<button onclick="buttonViewIn_Clicked();">Forward</button>
+				<button onclick="buttonViewOut_Clicked();">Back</button>
+			</div>
+
+			<div>
+				<label>Look at:</label>
+				<button onclick="buttonViewFront_Clicked();">Front</button> 
+				<button onclick="buttonViewSide_Clicked();">Side</button>
+				<button onclick="buttonViewTop_Clicked();">Top</button>
+				<button onclick="buttonViewSelected_Clicked();">Selected</button>
+			</div>
+
 		</div>
-		<div style="border:1px solid">
+
+		<div>
 			 
 			<label>Highlight:</label>
 			<label>Vertices:</label>
@@ -28,55 +68,68 @@
 			<label>Faces:</label>
 			<input id="checkboxHighlightFaces" type="checkbox" checked="true" onchange="checkboxHighlightFaces_Changed();"></input>
 		</div>
+
 	</div>
-	<div id="divSelect" style="border:1px solid">
+
+	<div id="divCursor">
+		<label>Cursor:</label>
+		<div>
+			<label>Position:</label>
+			<label>X:</label>
+			<input id="inputCursorPosX" type="number" value="0"></input>
+			<label>Y:</label>
+			<input id="inputCursorPosY" type="number" value="0"></input>
+			<label>Z:</label>
+			<input id="inputCursorPosZ" type="number" value="0"></input>
+		</div>
+		<div>
+			<label>Move to:</label>
+			<button onclick="buttonCursorMoveToOrigin_Clicked();">Origin</button>
+			<button onclick="buttonCursorMoveToSelected_Clicked();">Selected</button>
+		</div>
+	</div>
+
+	<div id="divSelect">
 		<label>Select:</label>
 		<button onclick="buttonSelectAtCursor_Clicked();">At Cursor</button>
 		<button onclick="buttonSelectAll_Clicked();">All</button>
 		<button onclick="buttonSelectNone_Clicked();">None</button>
 		<button onclick="buttonDeselectAtCursor_Clicked();">Deselect At Cursor</button>
 	</div>
-	<div id="divVertexOperations" style="border:1px solid">
+
+	<div id="divVertexOperations">
 		<label>Vertices:</label>
 		<button onclick="buttonVertexAddAtCursor_Clicked();">Add at Cursor</button>
 		<button onclick="buttonVertexDeleteSelected_Clicked();">Delete Selected</button>
 		<button onclick="buttonVertexConnectSelected_Clicked();">Connect Selected</button>
 		<button onclick="buttonVertexFaceBuildWithSelected_Clicked();">Face from Selected</button>
 	</div>
-	 
-	<div id="divTransform" style="border:1px solid">
+
+	<div id="divTransform">
 		<label>Transform:</label>
 		<div id="divTransformParameters">
-			<div>
-				<label>Relative to:</label>
-				<select id="selectTransformCenter">
-					<option>Origin</option>	
-					<option>Median of Selected</option>
-					<option>Cursor</option>
-				</select>
-			</div>
-			<div>
-				<label>Axes:</label>
-				<select id="selectTransformAxes">
-					<option>All</option>
-					<option>X</option>
-					<option>Y</option>
-					<option>Z</option>
-					<option>Camera Forward</option>
-				</select>
-			</div>
-			<div>
-				<label>Operation:</label>
-				<select id="selectTransformOperation">
-					<option>Translate</option>
-					<option>Rotate</option>
-					<option>Scale</option>
-				</select>
-			</div>
-			<div>
-				<label>Amount:</label>
-				<input id="inputTransformAmount" type="number" value="0"></input>
-			</div>
+			<label>Relative to:</label>
+			<select id="selectTransformCenter">
+				<option>Origin</option>	
+				<option>Median of Selected</option>
+				<option>Cursor</option>
+			</select>
+			<label>Axes:</label>
+			<select id="selectTransformAxes">
+				<option>All</option>
+				<option>X</option>
+				<option>Y</option>
+				<option>Z</option>
+				<option>Camera Forward</option>
+			</select>
+			<label>Operation:</label>
+			<select id="selectTransformOperation">
+				<option>Translate</option>
+				<option>Rotate</option>
+				<option>Scale</option>
+			</select>
+			<label>Amount:</label>
+			<input id="inputTransformAmount" type="number" value="0"></input>
 			<button onclick="buttonTransform_Clicked();">Transform Selected</button>
 		</div>
 	</div>
@@ -84,7 +137,7 @@
 		<label>File:</label>
 		<button onclick="buttonFileSave_Clicked();">Save</button>
 		<button onclick="buttonFileLoad_Clicked();">Load:</button>
-		<input id="inputFileToLoad" type="file"></input>
+		<input id="inputFileToLoad" type="file" style="width:256px"></input>
 	</div>
 </div>
 
@@ -122,12 +175,78 @@
 <script type="text/javascript" src="Transform_Translate.js"></script>
 <script type="text/javascript" src="Transform_TranslateInverse.js"></script>
 
-
-
 <script type="text/javascript">
- 
+
 // ui events
- 
+
+function buttonCameraViewUpdate_Clicked()
+{
+	var d = document;
+
+	var inputCameraViewSizeX =
+		d.getElementById("inputCameraViewSizeX");
+	var inputCameraViewSizeY =
+		d.getElementById("inputCameraViewSizeY");
+	var inputCameraFocalLength =
+		d.getElementById("inputCameraFocalLength");
+
+	var cameraViewSizeX =
+		parseFloat(inputCameraViewSizeX.value);
+	var cameraViewSizeY =
+		parseFloat(inputCameraViewSizeY.value);
+	var cameraFocalLength =
+		parseFloat(inputCameraFocalLength.value);
+
+	var cameraViewSizeNext = new Coords
+	(
+		cameraViewSizeX, cameraViewSizeY, 0
+	);
+
+	var session = Globals.Instance.session;
+	var camera = session.scene.camera;
+	var cameraViewSize = camera.viewSize;
+	cameraViewSize.overwriteWith(cameraViewSizeNext);
+	camera.viewSizeHalf.overwriteWith(cameraViewSize).half();
+	camera.focalLength = cameraFocalLength;
+
+	var display = Globals.Instance.display;
+	display.viewSize.overwriteWith(cameraViewSize);
+	display.initialize();
+
+	session.update();
+}
+
+function buttonCursorMoveToOrigin_Clicked()
+{
+	var session = Globals.Instance.session;
+	var scene = session.scene;
+	var cursor = scene.cursor;
+	var cursorPos = cursor.pos;
+	cursorPos.clear();
+	session.update();
+}
+
+function buttonCursorMoveToSelected_Clicked()
+{
+	var session = Globals.Instance.session;
+	var scene = session.scene;
+	var cursor = scene.cursor;
+	var cursorPos = cursor.pos;
+	cursorPos.clear();
+
+	var mesh = scene.mesh;
+
+	var selection = scene.selection;
+	var selectionMedian = selection.medianForMesh(mesh);
+	if (selectionMedian != null)
+	{
+		cursorPos.overwriteWith(selectionMedian);
+	}
+
+	session.update();
+}
+
+
 function buttonDeselectAtCursor_Clicked()
 {
 	Globals.Instance.session.deselectAtCursor();
@@ -403,20 +522,7 @@ function checkboxHighlightFaces_Changed()
  
 function main()
 {
-	var camera = new Camera
-	(
-		new Coords(100, 100, 0), // viewSize
-		50, // focalLength
-		new Location
-		(
-			new Coords(-2, -2, -2), // pos
-			Orientation.fromForwardAndDown
-			(
-				new Coords(1, 1, 1), // forward
-				new Coords(0, 0, 1) // down
-			)
-		)
-	);
+	var camera = Camera.default();
  
 	var display = new Display
 	(

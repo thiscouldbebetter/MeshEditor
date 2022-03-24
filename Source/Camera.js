@@ -6,16 +6,34 @@ class Camera
 		this.focalLength = focalLength;
 		this.loc = loc;
 
-		this.viewSizeHalf = this.viewSize.clone().divideScalar(2);
+		this.viewSizeHalf = this.viewSize.clone().half();
 
 		this.constraints = 
 		[
-			new Constraint_Upright(),   
+			new Constraint_Upright(),
 			new Constraint_LookAt(new Coords(0, 0, 0)),
 			new Constraint_KeepDistance(new Coords(0, 0, 0), this.loc.pos.magnitude()),
 		];
 
 		this.reinitialize();
+	}
+
+	static default()
+	{
+		return new Camera
+		(
+			new Coords(100, 100, 0), // viewSize
+			50, // focalLength
+			new Location
+			(
+				new Coords(-2, -2, -2),
+				Orientation.fromForwardAndDown
+				(
+					new Coords(1, 1, 1), // forward
+					new Coords(0, 0, 1) // down
+				)
+			)
+		);
 	}
 
 	constraintsApply()

@@ -25,6 +25,11 @@ class Display
  
 	drawCircle(center, radius, colorFill, colorBorder)
 	{
+		if (radius < 0)
+		{
+			return;
+		}
+
 		this.graphics.beginPath();
 		 
 		this.graphics.arc
@@ -77,16 +82,19 @@ class Display
 			);
 		}
 	}
-	 
+
 	initialize()
 	{
-		this.canvas = document.createElement("canvas");
+		var d = document;
+
+		this.canvas = d.createElement("canvas");
 		this.canvas.width = this.viewSize.x;
 		this.canvas.height = this.viewSize.y;
 		 
 		this.graphics = this.canvas.getContext("2d");
-		 
-		var divMain = document.getElementById("divMain");
-		divMain.appendChild(this.canvas);
+
+		var divDisplay = d.getElementById("divDisplay");
+		divDisplay.innerHTML = null;
+		divDisplay.appendChild(this.canvas);
 	}
 }

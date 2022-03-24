@@ -16,6 +16,50 @@ class Session
 		var display = Globals.Instance.display;
 		display.clear();
 		this.scene.update();
+
+		this.updateControls();
+	}
+
+	updateControls()
+	{
+		this.updateControls_Camera();
+		this.updateControls_Cursor();
+	}
+
+	updateControls_Camera()
+	{
+		var cameraPos = this.scene.camera.loc.pos;
+
+		var d = document;
+
+		var inputCameraPosX =
+			d.getElementById("inputCameraPosX");
+		var inputCameraPosY =
+			d.getElementById("inputCameraPosY");
+		var inputCameraPosZ =
+			d.getElementById("inputCameraPosZ");
+
+		inputCameraPosX.value = cameraPos.x;
+		inputCameraPosY.value = cameraPos.y;
+		inputCameraPosZ.value = cameraPos.z;
+	}
+
+	updateControls_Cursor()
+	{
+		var cursorPos = this.scene.cursor.pos;
+
+		var d = document;
+
+		var inputCursorPosX =
+			d.getElementById("inputCursorPosX");
+		var inputCursorPosY =
+			d.getElementById("inputCursorPosY");
+		var inputCursorPosZ =
+			d.getElementById("inputCursorPosZ");
+
+		inputCursorPosX.value = cursorPos.x;
+		inputCursorPosY.value = cursorPos.y;
+		inputCursorPosZ.value = cursorPos.z;
 	}
 
 	// tools
@@ -61,9 +105,9 @@ class Session
 	{
 		var vertexIndicesSelected = this.scene.selection.vertexIndices;
 		vertexIndicesSelected.length = 0;
-		 
+
 		var numberOfVertices = this.scene.mesh.vertices.length;
-				 
+
 		for (var i = 0; i < numberOfVertices; i++)
 		{
 			vertexIndicesSelected.push(i);
@@ -142,14 +186,15 @@ class Session
 		}
 		this.update();
 	}
-	 
+
 	selectNone()
 	{
-		var vertexIndicesSelected = this.scene.selection.vertexIndices;
+		var vertexIndicesSelected =
+			this.scene.selection.vertexIndices;
 		vertexIndicesSelected.length = 0;
 		this.update();
 	}
-	 
+
 	transformWithCenterApplyToSelected(transform, center)
 	{
 		// todo - Use center.
@@ -252,14 +297,14 @@ class Session
 			)
 		);
 	}
-	 
+
 	viewSetSelected()
 	{
 		var scene = this.scene;
 		var camera = scene.camera;
 		var mesh = scene.mesh;
+
 		var selection = scene.selection;
-		 
 		var selectionMedian = selection.medianForMesh(mesh);
 		if (selectionMedian != null)
 		{
@@ -267,7 +312,7 @@ class Session
 			constraintLookAt.targetPos.overwriteWith(selectionMedian);
 		}
 	}
-		 
+
 	viewSetSide()
 	{
 		this.viewSet

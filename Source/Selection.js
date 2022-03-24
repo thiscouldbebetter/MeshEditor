@@ -9,7 +9,7 @@ class Selection
 	medianForMesh(mesh)
 	{
 		var returnValue = null;
-		if (this.vertexIndicesSelected.length > 0)
+		if (this.vertexIndices.length > 0)
 		{
 			var verticesSelected = this.verticesForMesh(mesh);
 			var bounds = Bounds.ofPoints(verticesSelected);

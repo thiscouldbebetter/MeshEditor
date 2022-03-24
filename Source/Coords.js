@@ -29,6 +29,14 @@ class Coords
 		return this;
 	}
 
+	clear()
+	{
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+		return this;
+	}
+
 	clone()
 	{
 		return new Coords(this.x, this.y, this.z);
@@ -75,6 +83,11 @@ class Coords
 		);
 		 
 		return returnValue;
+	}
+
+	half()
+	{
+		return this.divideScalar(2);
 	}
 
 	invert()
