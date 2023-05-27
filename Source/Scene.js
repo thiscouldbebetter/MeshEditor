@@ -5,10 +5,10 @@ class Scene
 	{
 		this.camera = camera;
 		this.mesh = mesh;
-	 
+
 		this.selection = new Selection();
 		this.cursor = new Cursor();
-		 
+
 		this.highlightVertices = true;
 		this.highlightFaces = true;
 	}
@@ -39,32 +39,34 @@ class Scene
 		{
 			inputHelper.keyPressed = null;
 
+			var amountToMove = .1;
+
 			if (keyPressed.startsWith("Arrow") )
 			{
 				if (keyPressed == "ArrowDown")
 				{
-					session.viewMoveDown();
+					session.viewMoveDown(amountToMove);
 				}
 				else if (keyPressed == "ArrowLeft")
 				{
-					session.viewMoveLeft();
+					session.viewMoveLeft(amountToMove);
 				}
 				else if (keyPressed == "ArrowRight")
 				{
-					session.viewMoveRight();
+					session.viewMoveRight(amountToMove);
 				}
 				else if (keyPressed == "ArrowUp")
 				{
-					session.viewMoveUp();
+					session.viewMoveUp(amountToMove);
 				}
 			}
-			else if (keyPressed == "=") // +
+			else if (keyPressed == "=" || keyPressed == "+") 
 			{
-				session.viewMoveIn();
+				session.viewMoveIn(amountToMove);
 			}
 			else if (keyPressed == "-")
 			{
-				session.viewMoveOut();  
+				session.viewMoveOut(amountToMove);
 			}
  
 		}

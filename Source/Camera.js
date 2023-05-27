@@ -20,10 +20,12 @@ class Camera
 
 	static default()
 	{
+		var focalLength = 150;
+
 		return new Camera
 		(
-			new Coords(100, 100, 0), // viewSize
-			50, // focalLength
+			new Coords(2, 2, 0).multiplyScalar(focalLength), // viewSize
+			focalLength,
 			new Location
 			(
 				new Coords(-2, -2, -2),
@@ -57,7 +59,12 @@ class Camera
 
 	transformDistanceWorldToView(distanceToTransform, distanceFromCamera)
 	{
-		var returnValue = distanceToTransform * this.focalLength * this.focalLength / distanceFromCamera;
+		var returnValue =
+			distanceToTransform
+			* this.focalLength
+			* this.focalLength
+			/ distanceFromCamera;
+
 		return returnValue;
 	}
 

@@ -20,11 +20,11 @@
 			<div>
 				<label>View Size:</label>
 				<label>Width:</label>
-				<input id="inputCameraViewSizeX" type="number" value="100"></input>
+				<input id="inputCameraViewSizeX" type="number" value="300"></input>
 				<label>Height:</label>
-				<input id="inputCameraViewSizeY" type="number" value="100"></input>
+				<input id="inputCameraViewSizeY" type="number" value="300"></input>
 				<label>Focal Length:</label>
-				<input id="inputCameraFocalLength" type="number" value="50"></input>
+				<input id="inputCameraFocalLength" type="number" value="150"></input>
 				<button onclick="buttonCameraViewUpdate_Clicked();">Update</button>
 			</div>
 
@@ -483,7 +483,7 @@ function buttonViewTop_Clicked()
 	session.viewSetTop();
 	session.update();
 }
- 
+
 function buttonViewUp_Clicked()
 {
 	var session = Globals.Instance.session;
@@ -507,7 +507,7 @@ function checkboxHighlightVertices_Changed()
 	session.scene.highlightVertices = highlightVertices;
 	session.update();   
 }
- 
+
 function checkboxHighlightFaces_Changed()
 {
 	var highlightFaces =
@@ -516,27 +516,27 @@ function checkboxHighlightFaces_Changed()
 	session.scene.highlightFaces = highlightFaces;
 	session.update();
 }
- 
- 
+
+
 // main
- 
+
 function main()
 {
 	var camera = Camera.default();
- 
+
 	var display = new Display
 	(
 		camera.viewSize
 	);
-	 
+
 	var mesh = MeshBuilder.cube();
-	 
+
 	var scene = new Scene
 	(
 		camera,
 		mesh
 	);
- 
+
 	Globals.Instance.initialize
 	(
 		display,

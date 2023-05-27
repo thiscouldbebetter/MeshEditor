@@ -18,12 +18,11 @@ class InputHelper
 		canvas.onmousedown = this.handleEventMouseDown.bind(this);
 		canvas.onmouseup = this.handleEventMouseUp.bind(this);
 
-		var divDisplay = d.getElementById("divDisplay");
-		var divDisplayBounds = divDisplay.getBoundingClientRect();
+		var canvasBounds = canvas.getBoundingClientRect();
 		this.mouseClickPosOffset = new Coords
 		(
-			divDisplayBounds.left,
-			divDisplayBounds.top,
+			canvasBounds.left,
+			canvasBounds.top,
 			0
 		);
 	}

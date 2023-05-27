@@ -136,7 +136,7 @@ class Session
 		var vertexPosApparent = new Coords();
 		var displacement = vertexPosApparent;
 		var vertexHandleRadius = 5;
-		 
+
 		var vertexZClosestSoFar = Number.POSITIVE_INFINITY;
 		var vertexIndexClosestSoFar = null;
  
@@ -153,12 +153,12 @@ class Session
 			(
 				inputHelper.mouseClickPos
 			);
-			 
+
 			var vertexZ = displacement.z;
 			displacement.z = 0;
-			 
+
 			var distanceOfVertexFromClick = displacement.magnitude();
-			 
+
 			if (distanceOfVertexFromClick <= vertexHandleRadius)
 			{
 				if (vertexZ < vertexZClosestSoFar)
@@ -167,9 +167,9 @@ class Session
 					vertexIndexClosestSoFar = i;
 				}
 			}
-			 
+
 		} // end for each vertex
-		 
+
 		if (vertexIndexClosestSoFar != null)
 		{
 			if (deselectRatherThanSelect == true)
@@ -273,7 +273,7 @@ class Session
 		 
 		var distanceOfCameraFromOrigin =
 			cameraLoc.pos.magnitude();
- 
+
 		cameraLoc.pos.overwriteWith
 		(
 			cameraOrientationNew.forward
@@ -281,7 +281,7 @@ class Session
 		(
 			distanceOfCameraFromOrigin
 		);
-		 
+
 		cameraLoc.orientation.overwriteWith(cameraOrientationNew);
 	}
 
@@ -325,7 +325,7 @@ class Session
 			)
 		);
 	}
-			 
+
 	viewSetTop()
 	{
 		this.viewSet
@@ -338,7 +338,7 @@ class Session
 			)
 		);
 	}
-	 
+
 	// serializer
 	 
 	serializerBuild()
